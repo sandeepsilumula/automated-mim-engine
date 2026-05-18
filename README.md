@@ -10,11 +10,11 @@ To observe the sub-second event-driven decoupling mechanics of this engine right
 
 <p align="center">
   <a href="https://sandeepsilumula.github.io/automated-mim-engine/web/simulator.html" target="_blank" style="text-decoration: none;">
-    <img src="https://img.shields.io/badge/LAUNCH_SIMULATION_SANDBOX-🔥-ff9900?style=for-the-badge&logo=amazon-aws&logoColor=white&labelColor=232F3E" alt="Launch Live Simulation Sandbox" stroke-width="2"/>
+    <img src="https://img.shields.io/badge/LAUNCH_SIMULATION_SANDBOX-🔥-ff9900?style=for-the-badge&logo=amazon-aws&logoColor=white&labelColor=232F3E" alt="Launch Live Simulation Sandbox" height="42" style="height: 42px; max-width: 100%; border-radius: 6px;" />
   </a>
 </p>
 
-<p align="center" style="font-size: 0.95em; color: #64748b; font-style: italic;">
+<p align="center" style="font-size: 0.95em; color: #64748b; font-style: italic; margin-top: 15px;">
   (Click the failure injection button inside the web app to trace live metric state changes, parallel EventBridge fan-out configurations, and automated runbook executions concurrently.)
 </p>
 
