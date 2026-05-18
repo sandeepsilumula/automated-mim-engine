@@ -41,10 +41,10 @@ graph LR
     D -.->|5. High-Priority Alert Email| G
     F -->|6. Runbook SRE-041 Executed| H
 
-    style Telemetry_Boundary fill:rgba(236,33,39,0.03),stroke:#EC2127,stroke-dasharray: 5 5;
-    style Event_Routing fill:rgba(75,39,162,0.03),stroke:#4B27A2,stroke-dasharray: 5 5;
-    style FanOut_Targets fill:rgba(255,153,0,0.03),stroke:#FF9900,stroke-dasharray: 5 5;
-    style Responders fill:rgba(30,41,59,0.05),stroke:#334155;
+    style Telemetry_Boundary fill:#fff3f3,stroke:#EC2127,stroke-dasharray: 5 5;
+    style Event_Routing fill:#f5f0ff,stroke:#4B27A2,stroke-dasharray: 5 5;
+    style FanOut_Targets fill:#fff9f0,stroke:#FF9900,stroke-dasharray: 5 5;
+    style Responders fill:#1e293b,stroke:#334155;
 ```
 
 ---
