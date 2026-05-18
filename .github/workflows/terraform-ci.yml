@@ -1,0 +1,35 @@
+name: "Terraform Lint and Validate"
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  terraform-ci:
+    name: "Lint & Validate Codebase"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.5.7
+
+      - name: Verify Terraform Formatting
+        run: terraform fmt -check -recursive
+
+      - name: Initialize Module Workspace
+        run: |
+          cd environments/prod
+          terraform init -backend=false
+
+      # Verifies the internal structural configuration paths are completely error-free
+      - name: Validate Configurations
+        run: |
+          cd environments/prod
+          terraform validate

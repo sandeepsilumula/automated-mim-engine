@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS MIM Engine Simulator</title>
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.344.0/dist/umd/lucide.min.js"></script>
+    <style>
+        :root {
+            --bg-main: #0f172a;
+            --bg-card: #1e293b;
+            --aws-orange: #ff9900;
+            --critical-red: #ef4444;
+            --success-green: #22c55e;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --purple-cli: #a855f7;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .simulator-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 968px) { .simulator-container { grid-template-columns: 1fr; } }
+
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h2 {
+            margin-top: 0;
+            font-size: 1.25rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-trigger {
+            background-color: var(--critical-red);
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-trigger:hover { opacity: 0.95; transform: translateY(-1px); }
+        .btn-trigger:disabled { background-color: var(--border); cursor: not-allowed; transform: none; }
+
+        .flow-diagram { display: flex; flex-direction: column; gap: 25px; margin-top: 25px; }
+
+        .node {
+            background: #0f172a;
+            border: 2px solid var(--border);
+            padding: 14px;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: 500;
+            transition: all 0.4s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .node.active { border-color: var(--aws-orange); box-shadow: 0 0 15px rgba(255, 153, 0, 0.5); }
+        .node.fired { border-color: var(--success-green); box-shadow: 0 0 15px rgba(34, 197, 94, 0.4); }
+        .node.breached { border-color: var(--critical-red); box-shadow: 0 0 15px rgba(239, 68, 68, 0.5); }
+
+        .fanout-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+
+        .terminal {
+            background-color: #020617;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 15px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            height: 220px;
+            overflow-y: auto;
+            color: #38bdf8;
+            margin-bottom: 20px;
+        }
+
+        .email-preview {
+            background-color: #ffffff;
+            color: #1e293b;
+            padding: 18px;
+            border-radius: 6px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            font-size: 0.85rem;
+            height: 220px;
+            overflow-y: auto;
+            border-left: 4px solid var(--border);
+        }
+
+        .email-preview.active { border-left-color: var(--critical-red); }
+
+        .badge { font-size: 0.75rem; padding: 3px 8px; border-radius: 4px; font-weight: bold; background: var(--border); color: var(--text-main); text-transform: uppercase; }
+        .badge.red { background: var(--critical-red); }
+        .badge.green { background: var(--success-green); }
+        .badge.orange { background: var(--aws-orange); }
+    </style>
+</head>
+<body>
+
+<div class="simulator-container">
+    <div class="card">
+        <h2><i data-lucide="sliders"></i> Incident Control Center</h2>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">
+            Simulate an error metrics spike. Watch the architecture intercept the alarm state and execute targets concurrently.
+        </p>
+        
+        <button class="btn-trigger" id="btnTrigger" onclick="startSimulation()">
+            <i data-lucide="zap"></i> Inject Failure via AWS CLI
+        </button>
+
+        <div class="flow-diagram">
+            <div class="node" id="nodeCloudWatch">
+                <i data-lucide="activity"></i>
+                <div style="flex-grow: 1; text-align: left;"><strong>CloudWatch Alarm:</strong> <code style="color: var(--aws-orange)">prod-major-incident-alarm</code></div>
+                <span class="badge" id="statusCW">OK</span>
+            </div>
+            
+            <div class="node" id="nodeEventBridge">
+                <i data-lucide="git-fork"></i>
+                <div style="flex-grow: 1; text-align: left;"><strong>Amazon EventBridge:</strong> <code>mim-routing-rule</code></div>
+                <span class="badge" id="statusEB">Idle</span>
+            </div>
+            
+            <div class="fanout-container">
+                <div class="node" id="nodeSNS" style="flex-direction: column; font-size: 0.8rem; padding: 10px;"><i data-lucide="bell"></i><strong>Direct SNS Alert</strong></div>
+                <div class="node" id="nodeLambdaEmail" style="flex-direction: column; font-size: 0.8rem; padding: 10px;"><i data-lucide="mail"></i><strong>Lambda Email Router</strong></div>
+                <div class="node" id="nodeLambdaRem" style="flex-direction: column; font-size: 0.8rem; padding: 10px;"><i data-lucide="cpu"></i><strong>Lambda Auto-Remediation</strong></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2><i data-lucide="terminal"></i> Telemetry & SRE Logs</h2>
+        <div style="font-weight: bold; margin-bottom: 6px; font-size: 0.85rem; color: var(--text-muted);">CloudWatch Logs / System stdout:</div>
+        <div class="terminal" id="terminalLogs">[INFO]: Infrastructure Engine active. GitHub Actions CI checks completed successfully. System waiting for telemetry inputs...</div>
+
+        <div style="font-weight: bold; margin-bottom: 6px; font-size: 0.85rem; color: var(--text-muted);">On-Call Responder Inbox (SNS Email Relay):</div>
+        <div class="email-preview" id="emailBox">No active major incidents reported. Operational state nominal.</div>
+    </div>
+</div>
+
+<script>
+    lucide.createIcons();
+    const logs = document.getElementById('terminalLogs');
+    const email = document.getElementById('emailBox');
+    const btn = document.getElementById('btnTrigger');
+    const statusCW = document.getElementById('statusCW');
+    const statusEB = document.getElementById('statusEB');
+
+    function appendLog(text, color = '#38bdf8') {
+        logs.innerHTML += `<div style="color: ${color}; margin-bottom: 4px;">${text}</div>`;
+        logs.scrollTop = logs.scrollHeight;
+    }
+    function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
+
+    async function startSimulation() {
+        btn.disabled = true;
+        document.querySelectorAll('.node').forEach(n => n.className = 'node');
+        statusCW.className = 'badge'; statusCW.innerText = 'OK';
+        statusEB.className = 'badge'; statusEB.innerText = 'Idle';
+        email.className = 'email-preview'; email.innerText = "Processing automated alert routing...";
+
+        appendLog("\n[AWS CLI]: aws cloudwatch put-metric-data --namespace 'CustomApplication/MIM' --metric-name 'Errors' --value 10", "var(--purple-cli)");
+        document.getElementById('nodeCloudWatch').classList.add('active');
+        await sleep(1000);
+        
+        document.getElementById('nodeCloudWatch').className = 'node breached';
+        statusCW.className = 'badge red'; statusCW.innerText = 'ALARM';
+        appendLog("[🚨 CLOUDWATCH]: SLA Breach Detected. State transitioned to ALARM.", "var(--critical-red)");
+        await sleep(1200);
+
+        document.getElementById('nodeEventBridge').classList.add('active');
+        statusEB.className = 'badge orange'; statusEB.innerText = 'Routing';
+        appendLog("[⚡ EVENTBRIDGE]: Intercepted state-change payload instantly. Evaluating metric rules...", "var(--aws-orange)");
+        await sleep(1200);
+
+        document.getElementById('nodeEventBridge').className = 'node fired';
+        statusEB.className = 'badge green'; statusEB.innerText = 'Matched';
+        document.getElementById('nodeSNS').classList.add('fired');
+        document.getElementById('nodeLambdaEmail').classList.add('fired');
+        document.getElementById('nodeLambdaRem').classList.add('fired');
+        appendLog("[🔀 EVENTBRIDGE]: Executing concurrent fan-out to 3 decoupled system targets.", "var(--success-green)");
+        await sleep(1000);
+
+        appendLog("\n--- AUTOMATED REMEDIATION ENGINE RUNNING ---", "var(--success-green)");
+        appendLog("[RUNBOOK TRACE]: Running playbook task [SRE-RUNBOOK-041] -> Purging target cache configurations...", "#34d399");
+        await sleep(1400);
+
+        appendLog("\n--- EMAIL DIAGNOSTIC ROUTER ACTIVATED ---", "#38bdf8");
+        appendLog("[LAMBDA]: Translating event details and executing SNS client publish payload request...", "#38bdf8");
+        await sleep(1000);
+
+        email.className = 'email-preview active';
+        email.innerHTML = `<strong>From:</strong> AWS SNS Relay Node &lt;no-reply@aws.amazon.com&gt;
+<strong>Subject:</strong> 🚨 MIM [CRITICAL]: prod-major-incident-alarm transitioned to ALARM
+
+🚨 MAJOR INCIDENT ALERT 🚨
+=========================================
+Alarm Name        : prod-major-incident-alarm
+⚠️ Current Status    : ALARM
+🌐 Target Region      : us-east-1
+⏰ Trigger Timestamp  : ${new Date().toISOString()}
+
+=========================================
+Actions Taken: Automated Remediation Runbooks have been concurrently invoked via EventBridge rules.`;
+        btn.disabled = false;
+    }
+</script>
+</body>
+</html>

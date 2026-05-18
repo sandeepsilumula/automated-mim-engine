@@ -1,0 +1,295 @@
+{
+  "version": 4,
+  "terraform_version": "1.15.2",
+  "serial": 7,
+  "lineage": "141d3c6b-c7b7-be57-83ed-434f304253eb",
+  "outputs": {},
+  "resources": [
+    {
+      "module": "module.incident_response",
+      "mode": "data",
+      "type": "archive_file",
+      "name": "chatops_zip",
+      "provider": "provider[\"registry.terraform.io/hashicorp/archive\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "exclude_symlink_directories": null,
+            "excludes": null,
+            "id": "40cd33af72ae987953e52773a5abd6ddb301d1de",
+            "output_base64sha256": "u4ZGWytVghE11LyMrZoFnFhHmfI6QDqlhCCLSIx1vx0=",
+            "output_base64sha512": "ySqzoShonIH6Eqm6b1IJhkoTtfPWcV7fOwc9se9YgJbehlqETAeNSe/JbydFGEvWkoPuwfmtcQyXqK8NBWG/3Q==",
+            "output_file_mode": null,
+            "output_md5": "f2b618f14adcb72a13284bcf406e602e",
+            "output_path": "../../modules/incident_response/lambdas/chatops_router.zip",
+            "output_sha": "40cd33af72ae987953e52773a5abd6ddb301d1de",
+            "output_sha256": "bb86465b2b55821135d4bc8cad9a059c584799f23a403aa584208b488c75bf1d",
+            "output_sha512": "c92ab3a128689c81fa12a9ba6f5209864a13b5f3d6715edf3b073db1ef588096de865a844c078d49efc96f2745184bd69283eec1f9ad710c97a8af0d0561bfdd",
+            "output_size": 1048,
+            "source": [],
+            "source_content": null,
+            "source_content_filename": null,
+            "source_dir": null,
+            "source_file": "../../modules/incident_response/lambdas/chatops_router.py",
+            "type": "zip"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        }
+      ]
+    },
+    {
+      "module": "module.incident_response",
+      "mode": "data",
+      "type": "archive_file",
+      "name": "remediation_zip",
+      "provider": "provider[\"registry.terraform.io/hashicorp/archive\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "exclude_symlink_directories": null,
+            "excludes": null,
+            "id": "d9e6a4cb5a0f1380db7cb8da337e9450fa358572",
+            "output_base64sha256": "RrjMfRIdegbceFKxDQCxvoJbibW3IMIXgiehBK/ROws=",
+            "output_base64sha512": "Y6cQS5+xbX7vxbm7JQorzNGvFgVkEyuw7LwUR17e1zpSDfH3ANY3y+HxTyq13d2nvWc9vDaxJxSL6+8uf3jDsQ==",
+            "output_file_mode": null,
+            "output_md5": "b7b5f82b3c1a4f122bafc3329c5c7a80",
+            "output_path": "../../modules/incident_response/lambdas/auto_remediation.zip",
+            "output_sha": "d9e6a4cb5a0f1380db7cb8da337e9450fa358572",
+            "output_sha256": "46b8cc7d121d7a06dc7852b10d00b1be825b89b5b720c2178227a104afd13b0b",
+            "output_sha512": "63a7104b9fb16d7eefc5b9bb250a2bccd1af160564132bb0ecbc14475eded73a520df1f700d637cbe1f14f2ab5dddda7bd673dbc36b127148bebef2e7f78c3b1",
+            "output_size": 448,
+            "source": [],
+            "source_content": null,
+            "source_content_filename": null,
+            "source_dir": null,
+            "source_file": "../../modules/incident_response/lambdas/auto_remediation.py",
+            "type": "zip"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        }
+      ]
+    },
+    {
+      "module": "module.incident_response",
+      "mode": "managed",
+      "type": "aws_iam_role",
+      "name": "lambda_exec_role",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:iam::542129211547:role/prod-mim-lambda-role",
+            "assume_role_policy": "{\"Statement\":[{\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"lambda.amazonaws.com\"}}],\"Version\":\"2012-10-17\"}",
+            "create_date": "2026-05-18T18:09:21Z",
+            "description": "",
+            "force_detach_policies": false,
+            "id": "prod-mim-lambda-role",
+            "inline_policy": [],
+            "managed_policy_arns": [],
+            "max_session_duration": 3600,
+            "name": "prod-mim-lambda-role",
+            "name_prefix": "",
+            "path": "/",
+            "permissions_boundary": "",
+            "tags": null,
+            "tags_all": {},
+            "unique_id": "AROAX4OLLJCNSWIN3JQPJ"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA=="
+        }
+      ]
+    },
+    {
+      "module": "module.incident_response",
+      "mode": "managed",
+      "type": "aws_iam_role_policy_attachment",
+      "name": "lambda_logs",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "prod-mim-lambda-role-20260518180922316800000001",
+            "policy_arn": "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+            "role": "prod-mim-lambda-role"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "module.incident_response.aws_iam_role.lambda_exec_role"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.incident_response",
+      "mode": "managed",
+      "type": "aws_lambda_function",
+      "name": "auto_remediation",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "status": "tainted",
+          "schema_version": 0,
+          "attributes": {
+            "architectures": null,
+            "arn": null,
+            "code_sha256": null,
+            "code_signing_config_arn": null,
+            "dead_letter_config": [],
+            "description": null,
+            "environment": [],
+            "ephemeral_storage": null,
+            "file_system_config": [],
+            "filename": "../../modules/incident_response/lambdas/auto_remediation.zip",
+            "function_name": "prod-auto-remediation",
+            "handler": "auto_remediation.handler",
+            "id": "prod-auto-remediation",
+            "image_config": [],
+            "image_uri": null,
+            "invoke_arn": null,
+            "kms_key_arn": null,
+            "last_modified": null,
+            "layers": null,
+            "logging_config": null,
+            "memory_size": 128,
+            "package_type": "Zip",
+            "publish": false,
+            "qualified_arn": null,
+            "qualified_invoke_arn": null,
+            "replace_security_groups_on_destroy": null,
+            "replacement_security_group_ids": null,
+            "reserved_concurrent_executions": -1,
+            "role": "arn:aws:iam::542129211547:role/prod-mim-lambda-role",
+            "runtime": "python3.11",
+            "s3_bucket": null,
+            "s3_key": null,
+            "s3_object_version": null,
+            "signing_job_arn": null,
+            "signing_profile_version_arn": null,
+            "skip_destroy": false,
+            "snap_start": [],
+            "source_code_hash": "RrjMfRIdegbceFKxDQCxvoJbibW3IMIXgiehBK/ROws=",
+            "source_code_size": null,
+            "tags": null,
+            "tags_all": null,
+            "timeout": 3,
+            "timeouts": null,
+            "tracing_config": null,
+            "version": null,
+            "vpc_config": []
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6NjAwMDAwMDAwMDAwLCJ1cGRhdGUiOjYwMDAwMDAwMDAwMH19",
+          "dependencies": [
+            "module.incident_response.aws_iam_role.lambda_exec_role",
+            "module.incident_response.data.archive_file.remediation_zip"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.incident_response",
+      "mode": "managed",
+      "type": "aws_sns_topic",
+      "name": "incident_topic",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "status": "tainted",
+          "schema_version": 0,
+          "attributes": {
+            "application_failure_feedback_role_arn": null,
+            "application_success_feedback_role_arn": null,
+            "application_success_feedback_sample_rate": null,
+            "archive_policy": null,
+            "arn": null,
+            "beginning_archive_time": null,
+            "content_based_deduplication": false,
+            "delivery_policy": null,
+            "display_name": null,
+            "fifo_throughput_scope": null,
+            "fifo_topic": false,
+            "firehose_failure_feedback_role_arn": null,
+            "firehose_success_feedback_role_arn": null,
+            "firehose_success_feedback_sample_rate": null,
+            "http_failure_feedback_role_arn": null,
+            "http_success_feedback_role_arn": null,
+            "http_success_feedback_sample_rate": null,
+            "id": "arn:aws:sns:us-east-1:542129211547:prod-major-incident-topic",
+            "kms_master_key_id": null,
+            "lambda_failure_feedback_role_arn": null,
+            "lambda_success_feedback_role_arn": null,
+            "lambda_success_feedback_sample_rate": null,
+            "name": "prod-major-incident-topic",
+            "name_prefix": null,
+            "owner": null,
+            "policy": null,
+            "signature_version": null,
+            "sqs_failure_feedback_role_arn": null,
+            "sqs_success_feedback_role_arn": null,
+            "sqs_success_feedback_sample_rate": null,
+            "tags": null,
+            "tags_all": null,
+            "tracing_config": null
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA=="
+        }
+      ]
+    },
+    {
+      "module": "module.monitoring",
+      "mode": "managed",
+      "type": "aws_cloudwatch_metric_alarm",
+      "name": "major_incident_alarm",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "actions_enabled": true,
+            "alarm_actions": null,
+            "alarm_description": "Fires when critical error counts breach SLAs.",
+            "alarm_name": "prod-major-incident-alarm",
+            "arn": "arn:aws:cloudwatch:us-east-1:542129211547:alarm:prod-major-incident-alarm",
+            "comparison_operator": "GreaterThanThreshold",
+            "datapoints_to_alarm": 0,
+            "dimensions": null,
+            "evaluate_low_sample_count_percentiles": "",
+            "evaluation_periods": 1,
+            "extended_statistic": "",
+            "id": "prod-major-incident-alarm",
+            "insufficient_data_actions": null,
+            "metric_name": "Errors",
+            "metric_query": [],
+            "namespace": "CustomApplication/MIM",
+            "ok_actions": null,
+            "period": 60,
+            "statistic": "Sum",
+            "tags": null,
+            "tags_all": {},
+            "threshold": 5,
+            "threshold_metric_id": "",
+            "treat_missing_data": "notBreaching",
+            "unit": ""
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJzY2hlbWFfdmVyc2lvbiI6IjEifQ=="
+        }
+      ]
+    }
+  ],
+  "check_results": null
+}
