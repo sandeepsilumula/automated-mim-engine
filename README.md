@@ -4,48 +4,13 @@ An enterprise-grade, low-latency infrastructure response engine built entirely w
 
 ## 🏗️ AWS Infrastructure Topology
 
-```mermaid
-graph LR
-    classDef customNamespace fill:#232F3E,stroke:#232F3E,stroke-width:2px,color:#ffffff;
-    classDef awsCompute fill:#FF9900,stroke:#FF9900,stroke-width:2px,color:#000000;
-    classDef awsManagement fill:#EC2127,stroke:#EC2127,stroke-width:2px,color:#ffffff;
-    classDef awsIntegration fill:#4B27A2,stroke:#4B27A2,stroke-width:2px,color:#ffffff;
-    classDef externalNode fill:#1E293B,stroke:#334155,stroke-width:1px,color:#f8fafc;
+## 🔬 Live Interactive Simulation Lab
 
-    subgraph Telemetry_Boundary [" Observability & Telemetry "]
-        A[/"Custom App Metric Space<br/>(CustomApplication/MIM)"/]:::customNamespace
-        B("CloudWatch Alarm<br/>(prod-major-incident-alarm)"):::awsManagement
-    end
+To observe the sub-second event-driven decoupling mechanics of this engine right inside your browser without needing active AWS credentials, launch the interactive control web environment:
 
-    subgraph Event_Routing [" Event Ingestion Layer "]
-        C{"Amazon EventBridge<br/>(mim-routing-rule)"}:::awsIntegration
-    end
+[👉 Launch Live Architecture Simulation Sandbox 👈](https://sandeepsilumula.github.io/automated-mim-engine/web/simulator.html)
 
-    subgraph FanOut_Targets [" Decoupled Downstream Fan-Out (Concurrent) "]
-        D("Amazon SNS Topic<br/>(prod-major-incident-topic)"):::awsIntegration
-        E["AWS Lambda Function<br/>(email-diagnostic-router)"]:::awsCompute
-        F["AWS Lambda Function<br/>(auto-remediation)"]:::awsCompute
-    end
-
-    subgraph Responders [" On-Call Action Triage "]
-        G[["On-Call Team Inbox<br/>(SRE Triage Roster)"]]:::externalNode
-        H[/"Volatile System Cache<br/>(Target Component Purged)"/]:::customNamespace
-    end
-
-    A -->|1. SLA Metric Breached| B
-    B -->|2. State Intercept| C
-    C -->|3a. Direct Topic Route| D
-    C -->|3b. Invoke SDK Parser| E
-    C -->|3c. Trigger Playbook| F
-    E -->|4. Push Parsed Template| D
-    D -.->|5. High-Priority Alert Email| G
-    F -->|6. Runbook SRE-041 Executed| H
-
-    style Telemetry_Boundary fill:#fff3f3,stroke:#EC2127,stroke-dasharray: 5 5;
-    style Event_Routing fill:#f5f0ff,stroke:#4B27A2,stroke-dasharray: 5 5;
-    style FanOut_Targets fill:#fff9f0,stroke:#FF9900,stroke-dasharray: 5 5;
-    style Responders fill:#1e293b,stroke:#334155;
-```
+*(Click the failure injection button inside the web app to trace live metric state changes, parallel EventBridge fan-out configurations, and automated runbook executions concurrently.)*
 
 ---
 
