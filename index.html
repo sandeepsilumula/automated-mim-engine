@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enterprise Event-Driven MIM Engine Workspace</title>
+    <title>Enterprise Event-Driven MIM Engine | Production Workspace</title>
     
     <script type="module">
         import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
@@ -18,41 +18,66 @@
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --border: #334155;
+            --code-bg: #020617;
         }
         body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg-main);
             color: var(--text-main);
             margin: 0;
             padding: 40px 20px;
             line-height: 1.6;
         }
-        .container { max-width: 960px; margin: 0 auto; }
-        h1 { font-size: 2.2rem; color: #ffffff; border-bottom: 2px solid var(--aws-orange); padding-bottom: 12px; }
-        h2 { font-size: 1.5rem; color: var(--aws-orange); margin-top: 40px; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
-        h3 { font-size: 1.2rem; color: #f1f5f9; margin-top: 25px; }
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+        h1 { font-size: 2.2rem; color: #ffffff; border-bottom: 2px solid var(--aws-orange); padding-bottom: 12px; margin-bottom: 30px; }
+        h2 { font-size: 1.6rem; color: var(--aws-orange); margin-top: 40px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+        h3 { font-size: 1.2rem; color: #f1f5f9; margin-top: 25px; border-left: 3px solid var(--aws-orange); padding-left: 10px; }
+        h4 { font-size: 1.05rem; color: #e2e8f0; margin-top: 20px; font-weight: 600; }
         p { color: var(--text-muted); font-size: 1.05rem; }
         ul, ol { color: var(--text-muted); font-size: 1.05rem; padding-left: 20px; }
         li { margin-bottom: 8px; }
-        pre { background: #020617; border: 1px solid var(--border); padding: 15px; border-radius: 6px; overflow-x: auto; font-family: monospace; color: #38bdf8; }
-        code { font-family: monospace; background: rgba(51, 65, 85, 0.5); padding: 2px 6px; border-radius: 4px; color: #f472b6; }
-        pre code { background: none; padding: 0; color: inherit; }
+        strong { color: #ffffff; }
+        hr { border: 0; border-top: 1px solid var(--border); margin: 40px 0; }
+        
+        /* Layout Images & Centerings */
+        .img-container { text-align: center; margin: 20px 0; }
+        img { border-radius: 6px; max-width: 100%; height: auto; border: 1px solid var(--border); margin: 10px 0; }
+        .img-flex { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin: 20px 0; }
+        .img-flex img { width: 48%; min-width: 280px; }
+        
+        /* Code Frame Blocks */
+        pre { background: var(--code-bg); border: 1px solid var(--border); padding: 16px; border-radius: 8px; overflow-x: auto; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.9rem; color: #38bdf8; margin: 15px 0; }
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; background: rgba(51, 65, 85, 0.3); padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: #f472b6; }
+        pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+        
+        /* Mermaid Diagram Wrapper */
         .mermaid { background: #111827; border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin: 20px 0; display: flex; justify-content: center; }
-        .iframe-wrapper { position: relative; width: 100%; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; background: #020617; margin-top: 20px; }
-        iframe { width: 100%; height: 630px; border: none; display: block; }
     </style>
 </head>
 <body>
 
 <div class="container">
+
     <h1>Enterprise-Scale Event-Driven Major Incident Management (MIM) Engine</h1>
 
-    <h2>📝 Executive Summary</h2>
-    <p>This repository contains a production-ready, event-driven infrastructure resiliency framework engineered to optimize business continuity and dramatically minimize Mean Time to Resolution (MTTR). By leveraging Infrastructure as Code (IaC) modular design patterns, the system cleanly isolates telemetry monitoring boundaries from downstream automation engines.</p>
-    <p>Rather than relying on traditional high-overhead cron polling loops, this architecture processes real-time service SLA threshold violations through a zero-polling event mesh topology. Upon breach validation, failure signatures are immediately intercepted and distributed concurrently to decoupled handling layers. This enables simultaneous execution of custom Python triage reporting engines, immediate engineering on-call notifications via Amazon SNS, and automated self-healing runbook playbooks (<code>[SRE-RUNBOOK-041]</code>) that automatically clear volatile system memory and cache deadlocks within <strong>1.39 milliseconds</strong>—resolving critical service anomalies before human responders even receive the incoming alert.</p>
+    <section>
+        <h2>📝 Executive Summary</h2>
+        <p>
+            This repository contains a production-ready, event-driven infrastructure resiliency framework engineered to optimize business continuity and dramatically minimize Mean Time to Resolution (MTTR). By leveraging Infrastructure as Code (IaC) modular design patterns, the system cleanly isolates telemetry monitoring boundaries from downstream automation engines. 
+        </p>
+        <p>
+            Rather than relying on traditional high-overhead cron polling loops, this architecture processes real-time service SLA threshold violations through a zero-polling event mesh topology. Upon breach validation, failure signatures are immediately intercepted and distributed concurrently to decoupled handling layers. This enables simultaneous execution of custom Python triage reporting engines, immediate engineering on-call notifications via Amazon SNS, and automated self-healing runbook playbooks (<code>[SRE-RUNBOOK-041]</code>) that automatically clear volatile system memory and cache deadlocks within <strong>1.39 milliseconds</strong>—resolving critical service anomalies before human responders even receive the incoming alert.
+        </p>
+    </section>
 
-    <h2>🏗️ AWS Infrastructure Topology</h2>
-    <div class="mermaid">
+    <hr />
+
+    <section>
+        <h2>🏗️ AWS Infrastructure Topology</h2>
+        <div class="mermaid">
 graph LR
     classDef customNamespace fill:#232F3E,stroke:#232F3E,stroke-width:2px,color:#ffffff;
     classDef awsCompute fill:#FF9900,stroke:#FF9900,stroke-width:2px,color:#000000;
@@ -93,26 +118,43 @@ graph LR
     style Event_Routing fill:#f5f0ff,stroke:#4B27A2,stroke-dasharray: 5 5;
     style FanOut_Targets fill:#fff9f0,stroke:#FF9900,stroke-dasharray: 5 5;
     style Responders fill:#1e293b,stroke:#334155;
-    </div>
+        </div>
+    </section>
 
-    <h2>🔬 Live Interactive Simulation Lab</h2>
-    <p>To observe the sub-second event-driven decoupling mechanics of this engine right inside your browser without needing active AWS credentials, launch the interactive control web environment:</p>
-    <div style="text-align: center; margin: 25px 0;">
-        <a href="https://sandeepsilumula.github.io/automated-mim-engine/web/simulator.html" target="_blank" style="text-decoration: none;">
-            <img src="https://img.shields.io/badge/LAUNCH_SIMULATION_SANDBOX-🔥-ff9900?style=for-the-badge&logo=amazon-aws&logoColor=white&labelColor=232F3E" alt="Launch Live Simulation Sandbox" height="42" style="border:none; border-radius:6px;" />
-        </a>
-    </div>
+    <hr />
 
-    <h2>🛠️ Core Engineering Principles Implemented</h2>
-    <ul>
-        <li><strong>Blast Radius Isolation</strong>: Observability metrics injection points remain entirely separate from computing resources. If a remediation lambda times out, metric monitoring continues uninterrupted.</li>
-        <li><strong>Declarative Multi-Module Layout</strong>: Infrastructure is broken out into standalone, reusable submodules to prevent monolithic state files and allow rapid deployment configurations.</li>
-        <li><strong>Zero-Polling Architecture</strong>: Replaces periodic cron checks with sub-second EventBridge rule matching, driving notification overhead down to seconds.</li>
-        <li><strong>Continuous Integration Rigor</strong>: Protected by an automated GitHub Actions pipeline executing <code>terraform fmt</code> checking and <code>terraform validate</code> logic on every push event.</li>
-    </ul>
+    <section>
+        <h2>🔬 Live Interactive Simulation Lab</h2>
+        <p>To observe the sub-second event-driven decoupling mechanics of this engine right inside your browser without needing active AWS credentials, launch the interactive control web environment:</p>
+        
+        <div class="img-container">
+            <a href="https://sandeepsilumula.github.io/automated-mim-engine/web/simulator.html" target="_blank" style="text-decoration: none;">
+                <img src="https://img.shields.io/badge/LAUNCH_SIMULATION_SANDBOX-🔥-ff9900?style=for-the-badge&logo=amazon-aws&logoColor=white&labelColor=232F3E" alt="Launch Live Simulation Sandbox" height="42" style="height: 42px; border: none; border-radius: 6px;" />
+            </a>
+        </div>
 
-    <h2>📂 Repository Structural Layout</h2>
-    <pre>
+        <p style="text-align: center; font-size: 0.95em; color: #64748b; font-style: italic; margin-top: 15px;">
+            (Click the failure injection button inside the web app to trace live metric state changes, parallel EventBridge fan-out configurations, and automated runbook executions concurrently.)
+        </p>
+    </section>
+
+    <hr />
+
+    <section>
+        <h2>🛠️ Core Engineering Principles Implemented</h2>
+        <ul>
+            <li><strong>Blast Radius Isolation</strong>: Observability metrics injection points remain entirely separate from computing resources. If a remediation lambda times out, metric monitoring continues uninterrupted.</li>
+            <li><strong>Declarative Multi-Module Layout</strong>: Infrastructure is broken out into standalone, reusable submodules to prevent monolithic state files and allow rapid deployment configurations.</li>
+            <li><strong>Zero-Polling Architecture</strong>: Replaces periodic cron checks with sub-second EventBridge rule matching, driving notification overhead down to seconds.</li>
+            <li><strong>Continuous Integration Rigor</strong>: Protected by an automated GitHub Actions pipeline executing <code>terraform fmt</code> checking and <code>terraform validate</code> logic on every push event.</li>
+        </ul>
+    </section>
+
+    <hr />
+
+    <section>
+        <h2>📂 Repository Structural Layout</h2>
+        <pre>
 mim-engine/
 ├── .github/workflows/
 │   └── terraform-ci.yml      # GitHub Actions linting/validation engine configuration
@@ -130,14 +172,72 @@ mim-engine/
 │       └── terraform.tfvars  # Encrypted configuration parameter target limits
 └── web/
     └── simulator.html        # Interactive browser client engine sandbox simulation UI</pre>
+    </section>
 
-    <h2>🚀 How to Run Locally</h2>
-    <ol>
-        <li>Initialize directories: <pre>cd environments/prod && terraform init</pre></li>
-        <li>Validate syntax hooks: <pre>terraform validate</pre></li>
-        <li>Launch infrastructure map: <pre>terraform apply -auto-approve</pre></li>
-        <li>Tear down infrastructure boundaries: <pre>terraform destroy -auto-approve</pre></li>
-    </ol>
+    <hr />
+
+    <section>
+        <h2>📊 End-to-End System Validation & Proofs</h2>
+
+        <h3>Phase 1: Notification Authorization Layer</h3>
+        <p>To secure our communication lines, an out-of-band Amazon SNS confirmation loop was initialized via Terraform and verified via the AWS CLI.</p>
+
+        <div class="img-flex">
+            <img src="docs/assets/01-sns-confirmation-email.png" title="SNS Opt-In Email" alt="SNS Opt-In Email" />
+            <img src="docs/assets/02-aws-subscription-success.png" title="AWS Registration Success" alt="AWS Registration Success" />
+        </div>
+
+        <p>Verifying the topic state via the AWS CLI confirms that our targeted communication parameters have moved safely out of the <code>PendingConfirmation</code> stage and into an active ARN block:</p>
+
+        <pre>aws sns list-subscriptions-by-topic --topic-arn "arn:aws:sns:us-east-1:542129211547:prod-major-incident-topic"</pre>
+        
+        <div class="img-container">
+            <img src="docs/assets/03-cli-active-subscription.png" style="width: 90%;" title="CLI Active Table Output" alt="CLI Active Table Output" />
+        </div>
+
+        <h3>Phase 2: Anomaly Data Injection & Alarm Triggering</h3>
+        <p>To simulate a production failure pattern, a sample anomaly data packet was injected using the AWS CLI toolset. CloudWatch intercepted the metric count spike, driving the telemetry state into <strong>ALARM</strong>:</p>
+
+        <pre>aws cloudwatch describe-alarms --alarm-names "prod-major-incident-alarm"</pre>
+        
+        <div class="img-container">
+            <img src="docs/assets/04-cloudwatch-alarm-tripped.png" style="width: 90%;" title="CloudWatch Alarm Fired" alt="CloudWatch Alarm Fired" />
+        </div>
+
+        <h3>Phase 3: Decoupled Concurrent Fan-Out Execution</h3>
+        <p>Upon state alteration, the Amazon EventBridge bus immediately intercepted the alarm payload and distributed execution tasks concurrently to all decoupled downstream systems:</p>
+
+        <h4>Target A: Direct SNS Raw Event Payload</h4>
+        <p>The raw metrics string payload was passed directly to the standby on-call alerting engineers:</p>
+        <div class="img-container">
+            <img src="docs/assets/05-sns-raw-json-payload.png" style="width: 90%;" title="SNS Raw JSON Notification" alt="SNS Raw JSON Notification" />
+        </div>
+
+        <h4>Target B: Python Diagnostic Parsing Engine</h4>
+        <p>Concurrently, the <code>email-diagnostic-router</code> Lambda parsed the raw payload variables into a clean, human-readable triage report template:</p>
+        <div class="img-container">
+            <img src="docs/assets/06-lambda-parsed-triage.png" style="width: 90%;" title="Python Parsed Triage Alert" alt="Python Parsed Triage Alert" />
+        </div>
+
+        <h4>Target C: Self-Healing Runbook Mitigation (MTTR: 1.39ms)</h4>
+        <p>Concurrently, the <code>auto-remediation</code> Lambda initialized and executed corrective runbook tasks (<code>[SRE-RUNBOOK-041]</code>) to flush corrupt cache variables, mitigating system degradation automatically:</p>
+        <div class="img-container">
+            <img src="docs/assets/07-lambda-remediation-logs.png" style="width: 90%;" title="Lambda Self Healing Output Logs" alt="Lambda Self Healing Output Logs" />
+        </div>
+    </section>
+
+    <hr />
+
+    <section>
+        <h2>🚀 How to Run Locally</h2>
+        <ol>
+            <li>Initialize directories: <pre>cd environments/prod && terraform init</pre></li>
+            <li>Validate syntax hooks: <pre>terraform validate</pre></li>
+            <li>Launch infrastructure map: <pre>terraform apply -auto-approve</pre></li>
+            <li>Tear down infrastructure boundaries: <pre>terraform destroy -auto-approve</pre></li>
+        </ol>
+    </section>
+
 </div>
 
 </body>
