@@ -4,9 +4,56 @@
 
 This repository contains a production-ready, event-driven infrastructure resiliency framework engineered to optimize business continuity and dramatically minimize Mean Time to Resolution (MTTR). By leveraging Infrastructure as Code (IaC) modular design patterns, the system cleanly isolates telemetry monitoring boundaries from downstream automation engines. 
 
-Rather than relying on traditional high-overhead cron polling loops, this architecture processes real-time service SLA threshold violations through a zero-polling event mesh topology. Upon breach validation, failure signatures are immediately intercepted and distributed concurrently to decoupled handling layers. This enables simultaneous execution of custom Python triage reporting engines, immediate engineering on-call notifications via Amazon SNS, and automated self-healing runbook playbooks (`[SRE-RUNBOOK-041]`) that automatically clear volatile system memory and cache deadlocks within **1.39 milliseconds**—resolving critical service anomalies before human responders even receive the incoming alert. downstream automation routines—reducing Mean Time to Resolution (MTTR) programmatically.
+Rather than relying on traditional high-overhead cron polling loops, this architecture processes real-time service SLA threshold violations through a zero-polling event mesh topology. Upon breach validation, failure signatures are immediately intercepted and distributed concurrently to decoupled handling layers. This enables simultaneous execution of custom Python triage reporting engines, immediate engineering on-call notifications via Amazon SNS, and automated self-healing runbook playbooks (`[SRE-RUNBOOK-041]`) that automatically clear volatile system memory and cache deadlocks within **1.39 milliseconds**—resolving critical service anomalies before human responders even receive the incoming alert.
+
+---
 
 ## 🏗️ AWS Infrastructure Topology
+
+```mermaid
+graph LR
+    classDef customNamespace fill:#232F3E,stroke:#232F3E,stroke-width:2px,color:#ffffff;
+    classDef awsCompute fill:#FF9900,stroke:#FF9900,stroke-width:2px,color:#000000;
+    classDef awsManagement fill:#EC2127,stroke:#EC2127,stroke-width:2px,color:#ffffff;
+    classDef awsIntegration fill:#4B27A2,stroke:#4B27A2,stroke-width:2px,color:#ffffff;
+    classDef externalNode fill:#1E293B,stroke:#334155,stroke-width:1px,color:#f8fafc;
+
+    subgraph Telemetry_Boundary [" Observability & Telemetry "]
+        A[/"Custom App Metric Space<br/>(CustomApplication/MIM)"/]:::customNamespace
+        B("CloudWatch Alarm<br/>(prod-major-incident-alarm)"):::awsManagement
+    end
+
+    subgraph Event_Routing [" Event Ingestion Layer "]
+        C{"Amazon EventBridge<br/>(mim-routing-rule)"}:::awsIntegration
+    end
+
+    subgraph FanOut_Targets [" Decoupled Downstream Fan-Out (Concurrent) "]
+        D("Amazon SNS Topic<br/>(prod-major-incident-topic)"):::awsIntegration
+        E["AWS Lambda Function<br/>(email-diagnostic-router)"]:::awsCompute
+        F["AWS Lambda Function<br/>(auto-remediation)"]:::awsCompute
+    end
+
+    subgraph Responders [" On-Call Action Triage "]
+        G[["On-Call Team Inbox<br/>(SRE Triage Roster)"]]:::externalNode
+        H[/"Volatile System Cache<br/>(Target Component Purged)"/]:::customNamespace
+    end
+
+    A -->|1. SLA Metric Breached| B
+    B -->|2. State Intercept| C
+    C -->|3a. Direct Topic Route| D
+    C -->|3b. Invoke SDK Parser| E
+    C -->|3c. Trigger Playbook| F
+    E -->|4. Push Parsed Template| D
+    D -.->|5. High-Priority Alert Email| G
+    F -->|6. Runbook SRE-041 Executed| H
+
+    style Telemetry_Boundary fill:#fff3f3,stroke:#EC2127,stroke-dasharray: 5 5;
+    style Event_Routing fill:#f5f0ff,stroke:#4B27A2,stroke-dasharray: 5 5;
+    style FanOut_Targets fill:#fff9f0,stroke:#FF9900,stroke-dasharray: 5 5;
+    style Responders fill:#1e293b,stroke:#334155;
+```
+
+---
 
 ## 🔬 Live Interactive Simulation Lab
 
@@ -29,6 +76,30 @@ To observe the sub-second event-driven decoupling mechanics of this engine right
 * **Declarative Multi-Module Layout**: Infrastructure is broken out into standalone, reusable submodules to prevent monolithic state files and allow rapid deployment configurations.
 * **Zero-Polling Architecture**: Replaces periodic cron checks with sub-second EventBridge rule matching, driving notification overhead down to seconds.
 * **Continuous Integration Rigor**: Protected by an automated GitHub Actions pipeline executing `terraform fmt` checking and `terraform validate` logic on every push event.
+
+---
+
+## 📂 Repository Structural Layout
+
+```text
+mim-engine/
+├── .github/workflows/
+│   └── terraform-ci.yml      # GitHub Actions linting/validation engine configuration
+├── docs/assets/              # Auditable live cloud verification execution evidence images
+├── modules/                  # Reusable Cloud Native modular resource subcomponents
+│   ├── cloudwatch/
+│   ├── eventbridge/
+│   ├── lambda/
+│   └── sns/
+├── environments/
+│   └── prod/                 # Execution directory orchestrating state mappings
+│       ├── main.tf
+│       ├── outputs.tf
+│       ├── variables.tf
+│       └── terraform.tfvars  # Encrypted configuration parameter target limits
+└── web/
+    └── simulator.html        # Interactive browser client engine sandbox simulation UI
+```
 
 ---
 
