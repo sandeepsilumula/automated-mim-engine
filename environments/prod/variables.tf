@@ -6,4 +6,5 @@ variable "environment" {
 variable "incident_email" {
   description = "Email address for incident notifications"
   type        = string
+  default     = "sandeep.silumula@gmail.com"
 }
